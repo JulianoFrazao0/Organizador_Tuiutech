@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Portal Tuiutech</title>
+    
+    <!-- Fonte Roboto -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- Link para o CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="pagina-login">
+
+    <!-- Caixa central de Login -->
+    <div class="login-container">
+        <div class="login-box">
+            
+            <!-- Logo centralizada -->
+            <img src="frc9604.png" alt="Tuiutech" class="logo-login">
+            
+            <h2>Entrar no Portal</h2>
+            <p class="login-subtitulo">Acesso exclusivo para a equipe Tuiutech</p>
+
+            <!-- Formulário -->
+            <form id="formLogin">
+                <div class="grupo-input">
+                    <label for="idMembro">ID do membro</label>
+                    <input type="text" id="idMembro" class="input-login" placeholder="Ex: 011" autocomplete="username" required>
+                </div>
+
+                <div class="grupo-input">
+                    <label for="senha">Senha</label>
+                    <input type="password" id="senha" class="input-login" placeholder="Sua senha" autocomplete="current-password" required>
+                </div>
+
+                <!-- Botão de Entrar -->
+                <p id="erroLogin" class="login-erro" role="alert"></p>
+                <button type="submit" class="btn-primario btn-login">Entrar na Conta</button>
+            </form>
+
+            <div class="login-rodape">
+                <span>Esqueceu a senha? Peça ao administrador.</span>
+            </div>
+            
+        </div>
+    </div>
+
+    <!-- Link para o JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="config.js"></script>
+    <script src="auth.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

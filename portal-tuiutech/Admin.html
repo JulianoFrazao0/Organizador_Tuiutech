@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acessos - Portal Tuiutech</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header class="Cabecario">
+        <a href="index.html" class="logo-link">
+            <img src="frc9604.png" alt="Tuiutech" class="logo-img"><span class="logo-nome">Tuiutech</span>
+        </a>
+        <div class="menu-container">
+            <nav id="Menu">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="Documentos.html">Documentos</a></li>
+                    <li><a href="Projetos.html">Projetos</a></li>
+                </ul>
+            </nav>
+            <div class="grupo-perfil">
+                <div class="perfil-btn"></div>
+                <a href="Login.html" class="btn-sair">Sair</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="dashboard">
+        <div class="bloco-docs" style="margin-bottom: 30px;">
+            <h2>Chamada de hoje</h2>
+            <p id="dataChamada" style="color: var(--texto-fraco); font-size: 14px; margin: 4px 0 0;"></p>
+            <p id="codigoDoDia" class="codigo-do-dia">Carregando...</p>
+            <p style="color: var(--texto-fraco); font-size: 14px; margin: 12px 0 0;">
+                Fale este código para quem estiver presente. Cada pessoa digita ele na página inicial para confirmar a presença.
+            </p>
+            <h3 style="margin: 24px 0 10px; font-size: 15px; color: var(--texto-suave);">Já confirmaram hoje</h3>
+            <ul class="lista-presencas" id="listaPresencas"><li>Carregando...</li></ul>
+        </div>
+
+        <div class="bloco-docs" style="margin-bottom: 30px;">
+            <h2>Histórico de Chamadas</h2>
+            <p style="color: var(--texto-fraco); font-size: 14px; margin: -12px 0 16px;">Quem confirmou presença em cada dia anterior.</p>
+            <div id="historicoChamadas" class="grade-historico"><p class="texto-anexo">Carregando...</p></div>
+        </div>
+
+        <div class="bloco-docs">
+            <h2>Criar acesso</h2>
+            <form id="formMembro" class="form-acesso">
+                <div class="grupo-input">
+                    <label for="codigo">ID do membro</label>
+                    <input type="text" id="codigo" class="input-login" placeholder="Ex: 011" pattern="[0-9A-Za-z]{2,10}" required>
+                </div>
+                <div class="grupo-input">
+                    <label for="nome">Nome completo</label>
+                    <input type="text" id="nome" class="input-login" placeholder="Ex: Juliano Frazão" required>
+                </div>
+                <div class="grupo-input">
+                    <label for="senhaInicial">Senha inicial</label>
+                    <input type="text" id="senhaInicial" class="input-login" placeholder="Mínimo 4 caracteres" minlength="4" required>
+                </div>
+                <p id="msgAdmin" class="login-erro" role="alert"></p>
+                <button type="submit" class="btn-primario">Criar acesso</button>
+            </form>
+        </div>
+
+        <div class="bloco-docs" style="margin-top: 30px;">
+            <h2>Membros da equipe</h2>
+            <table class="tabela-docs">
+                <thead>
+                    <tr><th>ID</th><th>Nome</th><th>Papel</th><th></th></tr>
+                </thead>
+                <tbody id="listaMembros"></tbody>
+            </table>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="config.js"></script>
+    <script src="auth.js"></script>
+    <script>
+    (async () => {
+        const perfil = await window.pronto;
+        if (!perfil) return;
+        if (perfil.papel !== 'admin') { location.replace('index.html'); return; }
+
+        function hojeISO() {
+            const d = new Date();
+            return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+        }
+        function formatarDataExtenso(dataISO) {
+            const [ano, mes, dia] = dataISO.split('-').map(Number);
+            const d = new Date(ano, mes - 1, dia);
+            const texto = d.toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+            return texto.charAt(0).toUpperCase() + texto.slice(1);
+        }
+
+        async function carregarChamada() {
+            const hoje = hojeISO();
+            const elCodigo = document.getElementById('codigoDoDia');
+            const elLista = document.getElementById('listaPresencas');
+            const elData = document.getElementById('dataChamada');
+            if (elData) elData.textContent = formatarDataExtenso(hoje);
+
+            let { data: chamada } = await db.from('chamadas').select('codigo').eq('data', hoje).maybeSingle();
+            if (!chamada) {
+                const codigoNovo = String(Math.floor(Math.random() * 1000)).padStart(3, '0');
+                const { data: criada, error } = await db.from('chamadas').insert({ data: hoje, codigo: codigoNovo }).select('codigo').single();
+                if (error) { elCodigo.textContent = 'Erro ao gerar o código.'; return; }
+                chamada = criada;
+            }
+            elCodigo.textContent = chamada.codigo;
+
+            const { data: presencas } = await db.from('presencas')
+                .select('confirmado_em, perfis(nome)')
+                .eq('data', hoje)
+                .order('confirmado_em');
+
+            if (!presencas || presencas.length === 0) {
+                elLista.innerHTML = '<li>Ninguém confirmou ainda.</li>';
+                return;
+            }
+            elLista.innerHTML = presencas.map(p => `
+                <li><span>${(p.perfis?.nome || '—')}</span><span class="hora">${new Date(p.confirmado_em).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}</span></li>
+            `).join('');
+        }
+
+        carregarChamada();
+
+        async function carregarHistorico() {
+            const elHistorico = document.getElementById('historicoChamadas');
+            if (!elHistorico) return;
+
+            const { data: presencas, error } = await db.from('presencas')
+                .select('data, confirmado_em, perfis(nome)')
+                .order('data', { ascending: false })
+                .order('confirmado_em')
+                .limit(500);
+
+            if (error) { elHistorico.innerHTML = '<p class="texto-anexo">Não foi possível carregar o histórico.</p>'; return; }
+
+            const hoje = hojeISO();
+            const porDia = {};
+            (presencas || []).forEach(p => {
+                if (p.data === hoje) return; // hoje já aparece no bloco de cima
+                if (!porDia[p.data]) porDia[p.data] = [];
+                porDia[p.data].push(p);
+            });
+
+            const dias = Object.keys(porDia).sort((a, b) => b.localeCompare(a));
+            if (dias.length === 0) {
+                elHistorico.innerHTML = '<p class="texto-anexo">Ainda não há chamadas de dias anteriores.</p>';
+                return;
+            }
+
+            elHistorico.innerHTML = dias.map(dia => `
+                <div class="bloco-dia">
+                    <h3>${formatarDataExtenso(dia)}</h3>
+                    <ul class="lista-presencas">
+                        ${porDia[dia].map(p => `
+                            <li><span>${p.perfis?.nome || '—'}</span><span class="hora">${new Date(p.confirmado_em).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}</span></li>
+                        `).join('')}
+                    </ul>
+                </div>
+            `).join('');
+        }
+
+        carregarHistorico();
+
+        const msg = document.getElementById('msgAdmin');
+        const mostrar = (texto, ok = false) => {
+            msg.textContent = texto;
+            msg.classList.toggle('ok', ok);
+        };
+
+        async function chamar(corpo) {
+            const { data: { session } } = await db.auth.getSession();
+            const resposta = await fetch(`${SUPABASE_URL}/functions/v1/criar-membro`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'apikey': SUPABASE_ANON_KEY,
+                    'Authorization': `Bearer ${session.access_token}`
+                },
+                body: JSON.stringify(corpo)
+            });
+            const dados = await resposta.json();
+            if (!resposta.ok) throw new Error(dados.erro || 'Não foi possível concluir.');
+            return dados;
+        }
+
+        async function listar() {
+            const { data } = await db.from('perfis').select('codigo, nome, papel').order('codigo');
+            const corpo = document.getElementById('listaMembros');
+            corpo.replaceChildren();
+            (data || []).forEach(m => {
+                const tr = document.createElement('tr');
+                [m.codigo, m.nome, m.papel === 'admin' ? 'Administrador' : 'Membro'].forEach(txt => {
+                    const td = document.createElement('td');
+                    td.textContent = txt;
+                    tr.appendChild(td);
+                });
+                const tdAcao = document.createElement('td');
+                const botao = document.createElement('button');
+                botao.className = 'btn-secundario btn-tabela';
+                botao.textContent = 'Redefinir senha';
+                botao.addEventListener('click', async () => {
+                    const nova = prompt(`Nova senha para ${m.nome} (mínimo 4 caracteres):`);
+                    if (!nova) return;
+                    try {
+                        await chamar({ acao: 'redefinir', codigo: m.codigo, senha: nova });
+                        mostrar(`Senha de ${m.nome} redefinida.`, true);
+                    } catch (e) { mostrar(e.message); }
+                });
+                tdAcao.appendChild(botao);
+                tr.appendChild(tdAcao);
+                corpo.appendChild(tr);
+            });
+        }
+
+        document.getElementById('formMembro').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            mostrar('');
+            const codigo = document.getElementById('codigo').value.trim();
+            const nome = document.getElementById('nome').value.trim();
+            try {
+                await chamar({
+                    acao: 'criar',
+                    codigo,
+                    nome,
+                    senha: document.getElementById('senhaInicial').value
+                });
+                e.target.reset();
+                mostrar(`Acesso criado: ${nome} entra com o ID ${codigo}.`, true);
+                listar();
+            } catch (erro) { mostrar(erro.message); }
+        });
+
+        listar();
+    })();
+    </script>
+</body>
+</html>

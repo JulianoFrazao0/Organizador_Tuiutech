@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projetos - Portal Tuiutech</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    
+    <header class="Cabecario">
+        <a href="index.html" class="logo-link">
+            <img src="frc9604.png" alt="Tuiutech" class="logo-img"><span class="logo-nome">Tuiutech</span>
+        </a>
+        <div class="menu-container">
+            <nav id="Menu">
+                <ul>    
+                    <li><a href="index.html">Home</a></li>    
+                    <li><a href="Documentos.html">Documentos</a></li>   
+                    <li><a href="Projetos.html">Projetos</a></li>     
+                </ul>
+            </nav>
+            <div class="grupo-perfil">
+                <div class="perfil-btn">JF</div>
+                <a href="Login.html" class="btn-sair">Sair</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="kanban-container">
+        
+        <div id="painelPrazos"></div>
+
+        <div class="acoes-globais">
+            <button class="btn-secundario" id="btn-novo-quadro">+ Criar Novo Quadro</button>
+        </div>
+
+        <div id="todos-os-quadros">
+            
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="config.js"></script>
+    <script src="auth.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,370 @@
+/* ===== Portal Tuiutech: tema escuro com as cores do logo ===== */
+:root {
+    --fundo: #17181b;
+    --superficie: #1f2125;
+    --superficie-2: #272a2f;
+    --coluna: #131417;
+    --borda: #2e3136;
+    --texto: #e6e6e8;
+    --texto-suave: #a3a8b0;
+    --texto-fraco: #8c9199;
+    --vermelho: #e42225;
+    --vermelho-escuro: #c81b1e;
+    --raio: 8px;
+}
+
+* { font-family: 'Roboto', sans-serif; box-sizing: border-box; }
+
+body { margin: 0; padding: 0; min-height: 100vh; background-color: var(--fundo); color: var(--texto); line-height: 1.5; }
+h1, h2, h3 { font-weight: 700; color: white; }
+:focus-visible { outline: 2px solid var(--vermelho); outline-offset: 2px; }
+input:focus-visible, textarea:focus-visible { outline: none; }
+
+/* --- Cabeçalho --- */
+.Cabecario {
+    background-color: var(--fundo);
+    padding: 12px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    border-bottom: 1px solid var(--borda);
+}
+.logo-link { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+.logo-img { height: 40px; width: 40px; image-rendering: pixelated; border-radius: 6px; }
+.logo-nome { color: white; font-weight: 700; font-size: 18px; letter-spacing: 0.3px; }
+.menu-container { display: flex; align-items: center; gap: 28px; }
+#Menu ul { display: flex; list-style: none; margin: 0; padding: 0; gap: 6px; }
+#Menu a {
+    display: block;
+    color: var(--texto-suave);
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 14px;
+    padding: 8px 12px;
+    border-radius: 6px;
+    transition: 0.2s;
+}
+#Menu a:hover { color: white; background-color: var(--superficie); }
+#Menu a.active { color: white; background-color: var(--superficie-2); box-shadow: inset 0 -2px 0 var(--vermelho); }
+
+.grupo-perfil { display: flex; align-items: center; gap: 12px; }
+.perfil-btn {
+    background-color: var(--vermelho);
+    color: white;
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px; font-weight: bold;
+    cursor: default;
+}
+.perfil-btn.miniatura { width: 24px; height: 24px; font-size: 11px; }
+.btn-sair {
+    color: var(--texto-fraco);
+    text-decoration: none;
+    font-size: 14px; font-weight: bold;
+    border: 1px solid var(--borda);
+    padding: 6px 12px;
+    border-radius: 6px;
+    transition: 0.2s;
+}
+.btn-sair:hover { background-color: var(--vermelho); border-color: var(--vermelho); color: white; }
+
+/* --- Botões --- */
+.btn-primario {
+    background-color: var(--vermelho);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 6px;
+    font-weight: bold; font-size: 14px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+.btn-primario:hover { background-color: var(--vermelho-escuro); }
+.btn-secundario {
+    background-color: transparent;
+    color: var(--texto-suave);
+    border: 1px solid var(--borda);
+    padding: 12px 20px;
+    border-radius: 6px;
+    font-weight: bold; font-size: 14px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+.btn-secundario:hover { background-color: var(--superficie-2); color: white; }
+.btn-tabela { padding: 6px 12px; font-size: 13px; }
+
+/* --- Home --- */
+.dashboard { padding: 40px 24px; max-width: 1200px; margin: 0 auto; }
+.secao-dashboard { margin-bottom: 50px; }
+.cabecalho-secao { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.cabecalho-secao h2 { font-size: 26px; margin: 0; }
+.subtitulo-secao { color: var(--texto-fraco); font-size: 15px; margin: 6px 0 24px; }
+.grid-cartoes { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
+.cartao-tl {
+    background-color: var(--superficie);
+    border: 1px solid var(--borda);
+    border-radius: var(--raio);
+    overflow: hidden;
+    text-decoration: none;
+    display: flex; flex-direction: column;
+    transition: transform 0.2s, border-color 0.2s;
+}
+.cartao-tl:hover { border-color: #444951; transform: translateY(-2px); }
+.capa-cartao { height: 84px; }
+.gradiente-1 { background: linear-gradient(135deg, #950f0e, var(--vermelho)); }
+.gradiente-2 { background: linear-gradient(135deg, #2a2d33, #4b515b); }
+.info-cartao { padding: 16px; display: flex; flex-direction: column; gap: 4px; }
+.info-cartao strong { color: white; font-size: 16px; }
+.info-cartao span { color: var(--texto-fraco); font-size: 14px; }
+
+/* --- Documentos --- */
+.container-docs { display: flex; max-width: 1200px; margin: 32px auto; padding: 0 24px; gap: 28px; align-items: flex-start; }
+.sidebar-docs {
+    width: 250px; flex-shrink: 0;
+    background-color: var(--superficie);
+    border: 1px solid var(--borda);
+    padding: 20px;
+    border-radius: var(--raio);
+    position: sticky; top: 20px;
+}
+.sidebar-docs h3 { margin: 0 0 15px; font-size: 16px; border-bottom: 1px solid var(--borda); padding-bottom: 10px; }
+.sidebar-docs ul { list-style: none; padding: 0; margin: 0; }
+.sidebar-docs li { margin-bottom: 6px; }
+.sidebar-docs a {
+    color: var(--texto-suave);
+    text-decoration: none; font-weight: bold;
+    display: block; padding: 8px 10px; border-radius: 6px; transition: 0.2s;
+}
+.sidebar-docs a:hover { background-color: var(--superficie-2); color: white; }
+.sidebar-docs a.ativa { background-color: var(--superficie-2); color: white; box-shadow: inset 2px 0 0 var(--vermelho); }
+
+.conteudo-docs { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 28px; }
+.barra-pesquisa { display: flex; gap: 12px; flex-wrap: wrap; }
+.barra-pesquisa input {
+    flex: 1; min-width: 200px;
+    background-color: var(--superficie);
+    border: 1px solid var(--borda);
+    color: white; padding: 12px 15px; border-radius: 6px; font-size: 16px;
+}
+.barra-pesquisa input:focus { outline: none; border-color: var(--vermelho); }
+.btn-drive-topo {
+    background-color: #34a853; color: white; text-decoration: none;
+    padding: 12px 20px; border-radius: 6px; font-weight: bold; font-size: 14px;
+    transition: 0.2s; display: flex; align-items: center; white-space: nowrap;
+}
+.btn-drive-topo:hover { background-color: #2d8e47; }
+
+.bloco-docs { background-color: var(--superficie); border: 1px solid var(--borda); padding: 24px; border-radius: var(--raio); }
+.bloco-docs h2 { margin: 0 0 20px; font-size: 20px; }
+.tabela-docs { width: 100%; border-collapse: collapse; text-align: left; }
+.tabela-docs th, .tabela-docs td { padding: 12px 15px; border-bottom: 1px solid var(--borda); }
+.tabela-docs th { color: var(--texto-fraco); font-size: 14px; }
+.tabela-docs tbody tr:last-child td { border-bottom: none; }
+.tabela-docs tbody tr:hover { background-color: var(--superficie-2); }
+.tabela-docs td a { color: var(--texto); font-weight: 600; text-decoration: none; }
+.tabela-docs td a:hover { color: var(--vermelho); text-decoration: underline; }
+.tabela-docs .coluna-acoes { width: 44px; text-align: center; }
+.btn-excluir-doc {
+    background: transparent; border: 1px solid var(--borda); color: var(--texto-fraco);
+    border-radius: 6px; width: 28px; height: 28px; cursor: pointer; font-size: 14px; transition: 0.2s;
+}
+.btn-excluir-doc:hover { background-color: var(--vermelho); border-color: var(--vermelho); color: white; }
+
+/* Editor: o formulário empilha título, texto e botões (corrige o layout quebrado) */
+#formDocumentos { display: flex; flex-direction: column; gap: 15px; }
+.input-titulo {
+    width: 100%;
+    background-color: transparent;
+    border: none; border-bottom: 2px solid var(--borda);
+    color: white; font-size: 24px; font-weight: bold; padding: 10px 0;
+}
+.input-titulo:focus { outline: none; border-color: var(--vermelho); }
+.input-texto {
+    width: 100%;
+    background-color: var(--fundo);
+    border: 1px solid var(--borda); border-radius: 6px;
+    color: var(--texto); padding: 15px; font-size: 16px; line-height: 1.6;
+    min-height: 250px; resize: vertical;
+}
+.input-texto:focus { outline: none; border-color: var(--vermelho); }
+.editor-acoes { display: flex; gap: 12px; margin-top: 5px; }
+
+/* --- Kanban --- */
+.kanban-container { padding: 24px; display: flex; flex-direction: column; min-height: calc(100vh - 66px); }
+.acoes-globais { margin-bottom: 20px; text-align: right; }
+.linha-separadora { border: none; border-top: 1px solid var(--borda); margin: 40px 0; }
+.kanban-cabecalho { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 20px; }
+.kanban-cabecalho h2 { margin: 0; font-size: 24px; }
+.kanban-board { display: flex; gap: 16px; align-items: flex-start; overflow-x: auto; padding-bottom: 20px; }
+.kanban-coluna {
+    background-color: var(--coluna);
+    border: 1px solid var(--borda);
+    border-radius: 10px;
+    width: 290px; min-width: 290px;
+    display: flex; flex-direction: column; padding: 12px;
+}
+.coluna-cabecalho { display: flex; justify-content: space-between; align-items: center; padding: 6px 8px 14px; }
+.coluna-cabecalho h3 { margin: 0; font-size: 14px; color: var(--texto-suave); }
+.contador-tarefas { background-color: var(--superficie-2); color: var(--texto-suave); font-size: 12px; padding: 2px 8px; border-radius: 10px; font-weight: bold; }
+.kanban-cartoes { display: flex; flex-direction: column; gap: 8px; min-height: 12px; }
+.kanban-cartao {
+    background-color: var(--superficie);
+    border: 1px solid var(--borda);
+    border-radius: var(--raio);
+    padding: 12px; cursor: grab;
+    transition: background-color 0.2s, border-color 0.2s;
+}
+.kanban-cartao:hover { background-color: var(--superficie-2); border-color: #444951; }
+.cartao-titulo { color: var(--texto); font-size: 14px; margin: 4px 0; line-height: 1.4; overflow-wrap: anywhere; }
+.cartao-rodape { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; }
+.cartao-data { font-size: 12px; color: var(--texto-fraco); background-color: var(--fundo); padding: 2px 6px; border-radius: 4px; }
+.btn-add-cartao {
+    background: transparent; border: none; color: var(--texto-suave);
+    text-align: left; padding: 8px 10px; margin-top: 8px; border-radius: 6px;
+    cursor: pointer; font-weight: bold; font-size: 14px; transition: 0.2s;
+}
+.btn-add-cartao:hover { background-color: var(--superficie-2); color: white; }
+.btn-apagar-quadro {
+    background: transparent; border: 1px solid var(--borda); color: var(--texto-fraco);
+    border-radius: 6px; padding: 4px 8px; cursor: pointer; font-size: 14px; transition: 0.2s;
+}
+.btn-apagar-quadro:hover { background-color: var(--vermelho); border-color: var(--vermelho); color: white; }
+
+/* --- Login --- */
+.pagina-login { display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 20px; }
+.login-container { width: 100%; display: flex; justify-content: center; }
+.login-box {
+    background-color: var(--superficie);
+    border: 1px solid var(--borda);
+    padding: 40px; border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    width: 100%; max-width: 400px; text-align: center;
+}
+.logo-login { width: 80px; height: 80px; image-rendering: pixelated; border-radius: 10px; margin-bottom: 20px; }
+.login-box h2 { margin: 0 0 5px; font-size: 24px; }
+.login-subtitulo { color: var(--texto-fraco); font-size: 14px; margin: 0 0 30px; }
+.grupo-input { text-align: left; margin-bottom: 20px; }
+.grupo-input label { display: block; color: var(--texto-suave); font-size: 14px; font-weight: bold; margin-bottom: 8px; }
+.input-login {
+    width: 100%;
+    background-color: var(--coluna);
+    border: 1px solid var(--borda);
+    color: white; padding: 12px 15px; border-radius: 6px; font-size: 16px; transition: 0.2s;
+}
+.input-login:focus { outline: none; border-color: var(--vermelho); background-color: var(--fundo); }
+.btn-login { width: 100%; padding: 14px; font-size: 16px; margin-top: 4px; }
+.login-rodape { margin-top: 25px; font-size: 14px; }
+.login-rodape span { color: var(--texto-fraco); }
+.login-erro { color: #ff8f80; font-size: 14px; min-height: 20px; margin: 0 0 10px; text-align: left; }
+.login-erro.ok { color: #5aac44; }
+
+/* --- Página de acessos (admin) --- */
+.form-acesso { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; align-items: end; }
+.form-acesso .grupo-input { margin-bottom: 0; }
+.form-acesso .login-erro { grid-column: 1 / -1; margin: 0; }
+
+/* --- Telas menores --- */
+@media (max-width: 800px) {
+    .Cabecario { flex-wrap: wrap; padding: 12px 16px; }
+    .menu-container { width: 100%; justify-content: space-between; gap: 12px; }
+    #Menu ul { flex-wrap: wrap; }
+    #Menu a { padding: 8px 10px; font-size: 13px; }
+    .container-docs { flex-direction: column; padding: 0 16px; margin: 20px auto; }
+    .sidebar-docs { width: 100%; position: static; }
+    .dashboard, .kanban-container { padding: 20px 16px; }
+    .bloco-docs { padding: 18px; overflow-x: auto; }
+    .login-box { padding: 30px 24px; }
+
+    .barra-pesquisa { flex-direction: column; align-items: stretch; }
+    .barra-pesquisa input { width: 100%; }
+    .btn-drive-topo { justify-content: center; }
+
+    .form-acesso { grid-template-columns: 1fr; }
+    .modal-caixa { padding: 18px; }
+    .modal-acoes { flex-direction: column-reverse; }
+    .modal-acoes button { width: 100%; }
+    .btn-perigo { margin-right: 0; }
+
+    .codigo-do-dia { font-size: 32px; padding: 16px; letter-spacing: 2px; }
+    .grade-historico { grid-template-columns: 1fr; max-height: 400px; }
+
+    .kanban-cabecalho { flex-direction: column; align-items: stretch; }
+    .kanban-cabecalho .acoes-globais { text-align: left; margin-bottom: 0; }
+}
+
+@media (max-width: 480px) {
+    .logo-nome { display: none; }
+    .grupo-perfil { gap: 8px; }
+    .dashboard, .kanban-container, .container-docs { padding-left: 12px; padding-right: 12px; }
+    .bloco-docs { padding: 14px; }
+    .tabela-docs th, .tabela-docs td { padding: 10px 8px; font-size: 13px; }
+}
+
+
+/* --- Anexos nos documentos --- */
+.grupo-anexo { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.btn-anexo { display: inline-block; cursor: pointer; text-align: center; }
+.texto-anexo { color: var(--texto-fraco); font-size: 13px; }
+
+/* ===== Janelas (modais) de criar/editar ===== */
+.modal-overlay {
+    position: fixed; inset: 0;
+    background: rgba(10, 11, 13, 0.7);
+    display: flex; align-items: center; justify-content: center;
+    padding: 20px; z-index: 100;
+}
+.modal-overlay.oculto { display: none; }
+.modal-caixa {
+    background: var(--superficie);
+    border: 1px solid var(--borda);
+    border-radius: var(--raio);
+    padding: 24px;
+    width: 100%; max-width: 520px; max-height: 90vh;
+    overflow-y: auto;
+    display: flex; flex-direction: column; gap: 16px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+}
+.modal-caixa h2 { margin: 0; font-size: 20px; }
+.modal-caixa .grupo-input { margin-bottom: 0; }
+.modal-acoes { display: flex; gap: 12px; justify-content: flex-end; flex-wrap: wrap; }
+.btn-perigo {
+    background: transparent; color: #ff8f80;
+    border: 1px solid #5a2a28; padding: 12px 20px; border-radius: 6px;
+    font-weight: bold; cursor: pointer; margin-right: auto; transition: 0.2s;
+}
+.btn-perigo:hover { background: var(--vermelho); border-color: var(--vermelho); color: white; }
+
+/* --- Estado vazio da tabela de documentos --- */
+.tabela-docs .linha-vazia td { color: var(--texto-fraco); text-align: center; cursor: default; padding: 24px; }
+.tabela-docs .linha-vazia:hover { background: none; }
+
+/* --- Prazos nos cartões do Kanban --- */
+.cartao-prazo { font-size: 12px; padding: 2px 8px; border-radius: 4px; font-weight: bold; white-space: nowrap; }
+.cartao-prazo.prazo-atrasado { background: #3a1614; color: #ff8f80; }
+.cartao-prazo.prazo-proximo { background: #3a2c14; color: #ffcf80; }
+.cartao-prazo.prazo-ok { background: var(--fundo); color: var(--texto-fraco); }
+
+/* --- Painel de prazos (topo da página de Projetos) --- */
+.painel-prazos { background: var(--superficie); border: 1px solid var(--borda); border-radius: 6px; padding: 10px 14px; margin-bottom: 16px; max-width: 420px; }
+.painel-prazos h2 { margin: 0 0 8px; font-size: 13px; color: var(--texto-suave); font-weight: bold; }
+.lista-prazos { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
+.lista-prazos li { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 4px 0; flex-wrap: wrap; }
+.lista-prazos .tarefa-info { display: flex; flex-direction: column; gap: 0; min-width: 0; }
+.lista-prazos .tarefa-titulo { font-size: 13px; color: var(--texto); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.lista-prazos .tarefa-quadro { font-size: 11px; color: var(--texto-fraco); }
+.prazos-mais { margin: 6px 0 0; font-size: 12px; color: var(--texto-fraco); }
+
+/* --- Chamada (código do dia) --- */
+.bloco-chamada .grupo-anexo { align-items: center; }
+.lista-presencas { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; max-height: 260px; overflow-y: auto; }
+.lista-presencas li { display: flex; justify-content: space-between; padding: 8px 12px; background: var(--fundo); border-radius: 6px; font-size: 14px; }
+.lista-presencas .hora { color: var(--texto-fraco); font-size: 12px; }
+.codigo-do-dia { font-size: 42px; font-weight: 700; color: white; letter-spacing: 4px; text-align: center; padding: 20px; background: var(--fundo); border-radius: 8px; margin: 0; }
+
+/* --- Histórico de chamadas (blocos por dia) --- */
+.grade-historico { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 14px; max-height: 480px; overflow-y: auto; padding-right: 2px; }
+.bloco-dia { background: var(--coluna); border: 1px solid var(--borda); border-radius: 8px; padding: 14px; }
+.bloco-dia h3 { margin: 0 0 10px; font-size: 13px; color: var(--texto-suave); font-weight: bold; }
+.bloco-dia .lista-presencas { max-height: none; }

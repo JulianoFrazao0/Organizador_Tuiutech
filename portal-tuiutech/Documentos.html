@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentos - Portal Tuiutech</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header class="Cabecario">
+        <a href="index.html" class="logo-link">
+            <img src="frc9604.png" alt="Tuiutech" class="logo-img"><span class="logo-nome">Tuiutech</span>
+        </a>
+        <div class="menu-container">
+            <nav id="Menu">
+                <ul>    
+                    <li><a href="index.html">Home</a></li>    
+                    <li><a href="Documentos.html" class="active">Documentos</a></li>   
+                    <li><a href="Projetos.html">Projetos</a></li>     
+                </ul>
+            </nav>
+            <div class="grupo-perfil">
+                <div class="perfil-btn">JF</div>
+                <a href="Login.html" class="btn-sair">Sair</a>
+            </div>
+        </div>
+    </header>
+
+    <div class="container-docs">
+        
+        <aside class="sidebar-docs">
+            <h3>Categorias</h3>
+            <ul>
+                <li><a href="#" data-categoria="" class="ativa">Todos</a></li>
+                <li><a href="#" data-categoria="Mecânica & Design">Mecânica &amp; Design</a></li>
+                <li><a href="#" data-categoria="Programação & Autônomo">Programação &amp; Autônomo</a></li>
+                <li><a href="#" data-categoria="Gestão & Marketing">Gestão &amp; Marketing</a></li>
+                <li><a href="#" data-categoria="Atas de Reunião">Atas de Reunião</a></li>
+            </ul>
+        </aside>
+
+        <main class="conteudo-docs">
+            
+            <div class="barra-pesquisa">
+                <input type="text" placeholder="Pesquisar por título ou autor...">
+                <button class="btn-primario" id="btn-novo-doc">+ Novo Documento</button>
+                <label for="inputEnviarArquivo" class="btn-secundario btn-anexo">📎 Enviar Arquivo</label>
+                <input type="file" id="inputEnviarArquivo" hidden accept="image/*,.pdf,.doc,.docx,.xls,.xlsx">
+
+                <a href="https://drive.google.com/drive/folders/16vyOZZEhFDO54gjA5HK7O4euhsw4wck2" class="btn-drive-topo">
+                    Acessar Drive da Equipe
+                </a>
+            </div>
+
+            <div class="bloco-docs">
+                <h2 id="tituloListaDocs">Documentos Recentes</h2>
+                <table class="tabela-docs">
+                    <thead>
+                        <tr>
+                            <th>Nome do Documento</th>
+                            <th>Autor</th>
+                            <th>Última Modificação</th>
+                            <th class="coluna-acoes"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="linha-vazia"><td colspan="4">Carregando...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="config.js"></script>
+    <script src="auth.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
