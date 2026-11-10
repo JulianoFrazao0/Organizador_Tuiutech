@@ -10,8 +10,8 @@
  * ficam em pastas separadas do Drive.
  */
 
-const ID_DA_PASTA_UPLOADS = "16vyOZZEhFDO54gjA5HK7O4euhsw4wck2"; // pasta dos anexos/arquivos
-const ID_DA_PASTA_DOCS = "1SswBbOXasjnMXcTNz7jx3Ku08zJjseSU";    // pasta só dos Documentos
+const ID_DA_PASTA_UPLOADS = "blablabla"; // pasta dos anexos/arquivos
+const ID_DA_PASTA_DOCS = "blablabla";    // pasta só dos Documentos
 
 function doPost(e) {
   try {
