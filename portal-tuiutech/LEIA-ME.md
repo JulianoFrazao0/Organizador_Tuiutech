@@ -78,3 +78,71 @@ O jeito mais simples e gratuito, sem instalar nada:
 
 Sempre que eu (ou você) alterar algum arquivo do site, é só arrastar a pasta de novo em
 **Site settings > Deploys** (ou no mesmo endereço de drop) para atualizar.
+
+## 6. Chamada limitada à localização da equipe
+
+A chamada agora usa a Geolocation API do navegador, sem chave de API adicional.
+O campo do código começa bloqueado. A pessoa precisa tocar em **Verificar minha
+localização** e permitir o acesso. A função `confirmar-chamada` valida a distância;
+ao confirmar o código, o aparelho coleta outra localização e o servidor valida de novo.
+A liberação do campo dura 30 segundos e termina ao sair da aba. Não há rastreamento
+contínuo nem gravação das coordenadas na tabela de presenças.
+
+### Local e raio inicial
+
+- SENAI Cuiabá: Av. XV de Novembro, 303, Porto, Cuiabá–MT.
+- Latitude inicial: **-15.60857**; longitude inicial: **-56.10115**.
+- Raio inicial: **100 metros** (distância em linha reta ao ponto, não o contorno do campus).
+- Precisão máxima aceita: **50 metros**. A distância mais a margem de erro precisa
+  caber no raio; perto da borda, a pessoa pode precisar se aproximar do centro.
+
+O endereço foi conferido na [página oficial do SENAI](https://senaimt.ind.br/unidades/1/cuiaba/porto).
+As coordenadas são um ponto aproximado informado no [cadastro da escola](https://www.escolasnobrasil.com/centro-oeste/senai-cuiaba-cuiaba).
+Confira o ponto no laboratório antes da primeira chamada. O campus é grande, e um
+raio de 100 metros não necessariamente cobre todas as salas. Ajuste o centro para a
+sala da equipe, se necessário.
+
+### Publicar a atualização
+
+1. No Supabase, abra a função **confirmar-chamada**, substitua o conteúdo pelo arquivo
+   `supabase/functions/confirmar-chamada/index.ts` atualizado e publique (**Deploy**).
+   Ela continua sendo um único arquivo, compatível com o editor do painel.
+2. Publique o site com os arquivos atualizados, incluindo `index.html` e o novo
+   `chamada.js`. Publique a função antes do site para impedir confirmações sem localização.
+3. Abra o site por **HTTPS** no celular, permita a localização precisa e teste no local.
+   Não é necessário rodar SQL novo nem mudar as tabelas.
+
+Para alterar os valores sem editar o código, cadastre estas variáveis em
+**Supabase > Edge Functions > Secrets**:
+
+| Nome | Valor inicial |
+| --- | --- |
+| `CHAMADA_LATITUDE` | `-15.60857` |
+| `CHAMADA_LONGITUDE` | `-56.10115` |
+| `CHAMADA_RAIO_METROS` | `100` |
+| `CHAMADA_PRECISAO_MAXIMA_METROS` | `50` |
+
+Use ponto para os decimais. Se as variáveis não existirem, a função usa os padrões
+acima; valores vazios, não numéricos ou fora dos limites bloqueiam a chamada.
+O navegador não escolhe o centro nem o raio. A data da confirmação é validada no
+servidor usando o fuso `America/Cuiaba`, impedindo confirmações de outro dia.
+
+Referências: [localização no navegador](https://developer.mozilla.org/en-US/docs/Web/API/Geolocation/getCurrentPosition)
+e [variáveis no Supabase](https://supabase.com/docs/guides/functions/secrets).
+
+### Verificações antes de usar com a equipe
+
+- No centro do local, com localização precisa: liberar o campo e aceitar o código certo.
+- Fora do raio, mesmo com código certo: bloquear sem registrar presença.
+- Permissão negada, leitura imprecisa, conexão indisponível ou localização antiga: bloquear
+  e mostrar uma orientação para tentar novamente.
+- Depois de liberar o campo, sair do local: a nova leitura na confirmação deve bloquear.
+- Código errado: não registrar presença. Código certo repetido: manter uma única presença.
+
+Os testes automatizados podem ser executados com Node.js 22.13 ou mais recente:
+`node tests/chamada.cjs`. Eles simulam o navegador e o Supabase; não substituem o
+primeiro teste no local com GPS e a função publicada.
+
+A localização informada pelo dispositivo pode ser simulada. A validação do servidor
+impede pular a regra pela tela, mas não prova fisicamente que a pessoa está presente.
+Mantenha o código do dia como segunda condição para confirmar presença.

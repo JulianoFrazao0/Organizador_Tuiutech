@@ -38,9 +38,12 @@
                 <span id="dataChamada" style="color: var(--texto-fraco); font-size: 15px;"></span>
             </div>
             <div class="bloco-docs bloco-chamada" id="blocoChamada">
+                <p class="subtitulo-secao">Verifique sua localização no SENAI Cuiabá para liberar o código da chamada. Ela será consultada somente nesta verificação e ao confirmar a presença.</p>
+                <button type="button" class="btn-primario" id="btn-verificar-localizacao">Verificar minha localização</button>
+                <p id="msgLocalizacao" class="login-erro" role="status" aria-live="polite">O código será liberado depois de verificar sua localização.</p>
                 <div class="grupo-anexo">
-                    <input type="text" id="inputCodigoChamada" class="input-login" placeholder="Código de 3 dígitos" inputmode="numeric" maxlength="3" style="max-width: 160px;">
-                    <button class="btn-primario" id="btn-confirmar-chamada">Confirmar presença</button>
+                    <input type="text" id="inputCodigoChamada" class="input-login" placeholder="Código de 3 dígitos" aria-label="Código de 3 dígitos da chamada" aria-describedby="msgLocalizacao" inputmode="numeric" maxlength="3" style="max-width: 160px;" disabled>
+                    <button class="btn-primario" id="btn-confirmar-chamada" disabled>Confirmar presença</button>
                 </div>
                 <p id="msgChamada" class="login-erro" role="alert"></p>
             </div>
@@ -73,69 +76,6 @@
     <script src="config.js"></script>
     <script src="auth.js"></script>
     <script src="script.js"></script>
-    <script>
-    (async () => {
-        const perfil = await window.pronto;
-        if (!perfil) return;
-
-        const bloco = document.getElementById('blocoChamada');
-        const input = document.getElementById('inputCodigoChamada');
-        const botao = document.getElementById('btn-confirmar-chamada');
-        const msg = document.getElementById('msgChamada');
-
-        function hojeISO() {
-            const d = new Date();
-            return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
-        }
-        function formatarDataExtenso(dataISO) {
-            const [ano, mes, dia] = dataISO.split('-').map(Number);
-            const d = new Date(ano, mes - 1, dia);
-            const texto = d.toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
-            return texto.charAt(0).toUpperCase() + texto.slice(1);
-        }
-        const hoje = hojeISO();
-        const elDataChamada = document.getElementById('dataChamada');
-        if (elDataChamada) elDataChamada.textContent = formatarDataExtenso(hoje);
-
-        function mostrarConfirmado() {
-            bloco.innerHTML = '<p class="login-erro ok" style="margin:0;">✅ Presença confirmada hoje.</p>';
-        }
-
-        const { data: existente } = await db.from('presencas').select('id').eq('user_id', perfil.user_id).eq('data', hoje).maybeSingle();
-        if (existente) { mostrarConfirmado(); return; }
-
-        input.addEventListener('input', () => { input.value = input.value.replace(/\D/g, '').slice(0, 3); });
-
-        botao.addEventListener('click', async () => {
-            const codigo = input.value.trim();
-            if (!/^[0-9]{3}$/.test(codigo)) { msg.textContent = 'Digite os 3 números do código.'; return; }
-
-            botao.disabled = true;
-            msg.textContent = '';
-            try {
-                const { data: { session } } = await db.auth.getSession();
-                const resposta = await fetch(`${SUPABASE_URL}/functions/v1/confirmar-chamada`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'apikey': SUPABASE_ANON_KEY,
-                        'Authorization': `Bearer ${session.access_token}`
-                    },
-                    body: JSON.stringify({ codigo, data: hoje })
-                });
-                const resultado = await resposta.json();
-                if (!resposta.ok || !resultado.ok) {
-                    msg.textContent = resultado.erro || 'Código incorreto.';
-                    return;
-                }
-                mostrarConfirmado();
-            } catch (erro) {
-                msg.textContent = 'Não foi possível confirmar agora. Tente de novo.';
-            } finally {
-                botao.disabled = false;
-            }
-        });
-    })();
-    </script>
+    <script src="chamada.js"></script>
 </body>
 </html>
